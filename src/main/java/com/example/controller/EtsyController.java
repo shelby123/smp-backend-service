@@ -2,8 +2,8 @@ package com.example.controller;
 
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,11 +32,13 @@ public class EtsyController {
 	}
 	
 	
+	@CrossOrigin
 	@GetMapping("/listings")
 	public List<EtsyPost> getListings() {
         return etsyService.getPosts(); 
 	}
 	
+	@CrossOrigin
 	@GetMapping(value="/listings/{id}/images")
 	public List<EtsyImage> getListingImages(@PathVariable("id") int id) {
 		return etsyService.getPostImages(id);
