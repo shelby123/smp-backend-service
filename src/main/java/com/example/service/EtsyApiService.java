@@ -28,27 +28,25 @@ public class EtsyApiService {
 
 		String result = restTemplate.getForObject(url, String.class);
 
-		String numResultsPath = "$.count";
 		String listingIdPath = "$.results[*].listing_id";
+		String titlePath = "$.results[*].title";
+		String imageUrlPath = "$.results[*].MainImage.url_75x75";
 		
 		DocumentContext jsonContext = JsonPath.parse(result);
 		
 		List<EtsyPost> results = new ArrayList();
 		
 		List<Integer> listingIds = jsonContext.read(listingIdPath);
+		List<String> titles = jsonContext.read(titlePath);
+		List<String> imageUrls = jsonContext.read(imageUrlPath);
 		
-		int count = jsonContext.read(numResultsPath);
-		for(Integer id : listingIds) {
-//			int id = jsonContext.read(String.format(listingIdPath, i));
+		for(int i = 0; i < listingIds.size(); i++) {
 			EtsyPost toAdd = new EtsyPost();
-			toAdd.setListingId(id);
+			toAdd.setListingId(listingIds.get(i));
+			toAdd.setTitle(titles.get(i));
+			toAdd.setImageUrl(imageUrls.get(i));
 			results.add(toAdd);
 		}
-		
-		//      String path = "$[*].name";
-		//      
-		//      return jsonContext.read(path).toString();
-
 		return results;
 	}
 
